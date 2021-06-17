@@ -11,6 +11,9 @@ class User(AbstractUser):
 	email=models.EmailField()
 	password=models.CharField(max_length=255)
 	is_customer=models.BooleanField(default=False)
-	is_banker=models.BooleanField(default=False)
+	is_admin=models.BooleanField(default=False)
 
 	REQUIRED_FIELDS=[]
+
+
+	

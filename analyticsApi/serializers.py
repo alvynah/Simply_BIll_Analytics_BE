@@ -16,6 +16,7 @@ class SignUpSerializer(serializers.ModelSerializer):
           instance =self.Meta.model(**validated_data)
           if password is not None:
              instance.set_password(password)
+          instance.is_customer=True  
           instance.save()   
           return instance
 
