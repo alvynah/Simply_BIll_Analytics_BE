@@ -141,6 +141,10 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+# media configurations
+MEDIA_URL =  '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+
 AUTH_USER_MODEL='analyticsApi.User'
 
 # Default primary key field type

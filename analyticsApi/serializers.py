@@ -42,30 +42,3 @@ class AdminSignUpSerializer(serializers.ModelSerializer):
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-  # def save(self):
-  #   user = User(
-  #           username = self.validated_data['username'],
-  #           email = self.validated_data['email'],
-  #       )
-  #   password = self.validated_data['password']
-  #   confirm_password = self.validated_data['confirm_password']
-  #   if password != confirm_password:
-  #     raise serializers.ValidationError({'password': 'Passwords must match'})
-  #   user.set_password(password)
-  #   user.save()
-  #   return user
-
-
-
-
