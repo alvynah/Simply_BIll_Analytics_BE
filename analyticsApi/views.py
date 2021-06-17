@@ -8,7 +8,7 @@ from rest_framework import generics
 from rest_framework import filters
 from rest_framework.parsers import JSONParser
 from django.http.response import JsonResponse
-from analyticsApi.serializers import SignUpSerializer
+from analyticsApi.serializers import SignUpSerializer, AdminSignUpSerializer
 from rest_framework import serializers,status
 
 # Create your views here.
@@ -24,6 +24,26 @@ class RegisterApiView(generics.CreateAPIView):
             "user":dict(user_data),
             "status":"success",
             "message":"user added successfully",
+        }
+      }
+      return Response(response, status=status.HTTP_201_CREATED)
+    else:
+      return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+# admin registration
+class AdminRegisterApiView(generics.CreateAPIView):
+  serializer_class = AdminSignUpSerializer
+  def post(self, request):
+    serializer = self.serializer_class(data=request.data)
+    if serializer.is_valid(raise_exception=True):
+      serializer.save()
+      user_data =serializer.data
+      response={
+        "data":{
+            "user":dict(user_data),
+            "status":"success",
+            "message":"admin added successfully",
         }
       }
       return Response(response, status=status.HTTP_201_CREATED)
