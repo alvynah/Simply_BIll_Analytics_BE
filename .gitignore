@@ -1,4 +1,4 @@
-/virtual
+/venv
 *.pyc
 **/.vscode/
 __pycache__/
