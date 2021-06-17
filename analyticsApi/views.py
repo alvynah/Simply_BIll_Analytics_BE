@@ -12,9 +12,10 @@ from analyticsApi.serializers import SignUpSerializer
 from rest_framework import serializers,status
 
 # Create your views here.
-class RegisterApiView(APIView):
+class RegisterApiView(generics.CreateAPIView):
+  serializer_class = SignUpSerializer
   def post(self, request):
-    serializer = SignUpSerializer(data=request.data)
+    serializer = self.serializer_class(data=request.data)
     if serializer.is_valid(raise_exception=True):
       serializer.save()
       user_data =serializer.data
