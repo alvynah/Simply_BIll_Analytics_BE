@@ -89,3 +89,12 @@ class UserAPIView(APIView):
     user = User.objects.filter(userId=payload['id']).first()
     serializer = SignUpSerializer(user)
     return Response(serializer.data)
+
+#Logout view
+class LogoutAPIView(APIView):
+  def post(self, request):
+    response = Response()
+    response.delete_cookie('jwt')
+    response.data = {"message":"successfully logged out"}
+
+    return response
