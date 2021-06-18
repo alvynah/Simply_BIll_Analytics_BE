@@ -14,6 +14,12 @@ from pathlib import Path
 from decouple import config, Csv
 import os
 import dj_database_url
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
+
+
+
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -42,7 +48,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'analyticsApi',
     'rest_framework',
-    'corsheaders'
+    'corsheaders',
+    'cloudinary',
 ]
 
 MIDDLEWARE = [
@@ -144,6 +151,12 @@ USE_TZ = True
 
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS =True
+
+cloudinary.config(
+    cloud_name="cocoh",
+    api_key="126979457946663",
+    api_secret="aqCseLGMj2BuXmddy9zEo9UPrVY",
+)
 
 STATIC_URL = '/static/'
 
