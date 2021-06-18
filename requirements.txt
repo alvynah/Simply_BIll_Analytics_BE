@@ -2,8 +2,10 @@ asgiref==3.3.4
 config==0.5.0.post0
 dj-database-url==0.5.0
 Django==3.2.4
+django-cors-headers==3.7.0
 djangorestframework==3.12.4
 Pillow==8.2.0
+pkg-resources==0.0.0
 psycopg2==2.8.6
 PyJWT==2.1.0
 python-decouple==3.4
