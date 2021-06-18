@@ -153,9 +153,9 @@ CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS =True
 
 cloudinary.config(
-    cloud_name="cocoh",
-    api_key="126979457946663",
-    api_secret="aqCseLGMj2BuXmddy9zEo9UPrVY",
+  cloud_name = config('CLOUD_NAME'),
+  api_key = config("API_KEY"),
+  api_secret = config("API_SECRET")
 )
 
 STATIC_URL = '/static/'
