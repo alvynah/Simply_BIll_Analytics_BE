@@ -6,7 +6,7 @@ from django import forms
 class SignUpSerializer(serializers.ModelSerializer):
   class Meta:
     model = User
-    fields = ['username','first_name', 'last_name', 'phone_number', 'email','password']
+    fields = ['userId','username','first_name', 'last_name', 'phone_number', 'email','password']
     extra_kwargs = {
       "password": {'write_only': True}
     }
