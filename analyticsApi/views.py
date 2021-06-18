@@ -8,7 +8,7 @@ from rest_framework import generics
 from rest_framework import filters
 from rest_framework.parsers import JSONParser
 from django.http.response import JsonResponse
-from analyticsApi.serializers import SignUpSerializer, AdminSignUpSerializer
+from analyticsApi.serializers import SignUpSerializer, AdminSignUpSerializer,ActivationSerializer
 from rest_framework import serializers,status
 from .models import *
 import datetime
@@ -89,3 +89,35 @@ class UserAPIView(APIView):
     user = User.objects.filter(userId=payload['id']).first()
     serializer = SignUpSerializer(user)
     return Response(serializer.data)
+
+#Logout view
+class LogoutAPIView(APIView):
+  def post(self, request):
+    response = Response()
+    response.delete_cookie('jwt')
+    response.data = {"message":"successfully logged out"}
+
+    return response
+
+
+class ActivationApiView(generics.CreateAPIView):
+  serializer_class = ActivationSerializer
+
+  def post(self,request, phone_number,format=None):
+    user = User.objects.get(phone_number=phone_number)
+    
+    serializer = self.serializer_class(data=request.data)
+    if serializer.is_valid(raise_exception=True):
+      serializer.save(user = user)
+      Activation_data= serializer.data
+      response={
+        "data":{
+            "User Documents":dict(serializer.data),
+            "status":"success",
+            "message":"Documents  added successfully",
+        }
+      }
+      return Response(response, status=status.HTTP_201_CREATED)
+    else:
+      return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
+

@@ -42,6 +42,7 @@ class AdminSignUpSerializer(serializers.ModelSerializer):
 class ActivationSerializer(serializers.ModelSerializer):
   class Meta:
     model=Activation
+    exclude = ['user']
 
 
 
