@@ -1,12 +1,12 @@
 from rest_framework import serializers
-from .models import User
+from .models import User, Activation
 from django import forms
 
 
 class SignUpSerializer(serializers.ModelSerializer):
   class Meta:
     model = User
-    fields = ['username','first_name',  'last_name',  'phone_number', 'email','password']
+    fields = ['username','first_name', 'last_name', 'phone_number', 'email','password']
     extra_kwargs = {
       "password": {'write_only': True}
     }
@@ -37,6 +37,12 @@ class AdminSignUpSerializer(serializers.ModelSerializer):
           instance.is_admin=True  
           instance.save()   
           return instance
+
+# activation serializers 
+class ActivationSerializer(serializers.ModelSerializer):
+  class Meta:
+    model=Activation
+
 
 
 
