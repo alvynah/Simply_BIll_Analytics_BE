@@ -17,8 +17,10 @@ class SignUpSerializer(serializers.ModelSerializer):
           if password is not None:
              instance.set_password(password)
           instance.is_customer=True  
+          # instance.is_active=False
           instance.save()   
           return instance
+
 
 # admin sign up serializer
 class AdminSignUpSerializer(serializers.ModelSerializer):
@@ -43,6 +45,11 @@ class ActivationSerializer(serializers.ModelSerializer):
   class Meta:
     model=Activation
     exclude = ['user']
+
+class ActivateSerializer(serializers.ModelSerializer):
+  class Meta:
+    model = User
+    fields = ['is_valid']
 
 
 
