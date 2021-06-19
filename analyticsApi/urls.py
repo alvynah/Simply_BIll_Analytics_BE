@@ -10,7 +10,6 @@ path('api/user/login/', views.LoginApiView.as_view(), name="user-login"),
 path('api/user/current-user/', views.UserAPIView.as_view(), name="fetch-user"),
 path('logout/', views.LogoutAPIView.as_view(), name="logout"),
 path('api/activation-post/<int:phone_number>/', views.ActivationApiView.as_view(), name="ActivationPost"),
-
-
+path('api/activate-user/<int:phone_number>/', views.ActivateUserApiView.as_view(), name="ActivatingUser"),
 
 ]

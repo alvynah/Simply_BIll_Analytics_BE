@@ -7,8 +7,8 @@ from rest_framework.response import Response
 from rest_framework import generics
 from rest_framework import filters
 from rest_framework.parsers import JSONParser
-from django.http.response import JsonResponse
-from analyticsApi.serializers import SignUpSerializer, AdminSignUpSerializer,ActivationSerializer
+from django.http.response import JsonResponse,Http404
+from analyticsApi.serializers import SignUpSerializer, AdminSignUpSerializer,ActivationSerializer, ActivateSerializer
 from rest_framework import serializers,status
 from .models import *
 import datetime
@@ -120,4 +120,30 @@ class ActivationApiView(generics.CreateAPIView):
       return Response(response, status=status.HTTP_201_CREATED)
     else:
       return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class ActivateUserApiView(APIView):
+  def get_user(self, phone_number):
+        try:
+            return User.objects.get(phone_number=phone_number)
+        except:
+            return Http404
+
+  def get(self, request, phone_number, format=None):
+    user=self.get_user(phone_number)
+    serializers=ActivateSerializer(user)
+    return Response(serializers.data)
+
+  # update user to a valid user
+  def patch(self, request, phone_number, format=None):
+    user=self.get_user(phone_number)
+    serializers=ActivateSerializer(user, request.data, partial=True)
+    if serializers.is_valid(raise_exception=True):
+      serializers.save(is_valid=True)
+      valid_user=serializers.data
+
+      return Response(valid_user)
+    return Response(status.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+
 
