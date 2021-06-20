@@ -24,7 +24,7 @@ def upload_image(instance, filename):
 class Activation(models.Model):
 	user=models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
 	passport_photo=CloudinaryField('passport_photo')
-	identification_number=models.IntegerField()
+	identification_number=models.CharField(max_length=255)
 	identification_doc=CloudinaryField('passport/nationalID')
 	driving_license_picture=CloudinaryField('driving_license', blank=True)
 	residence=models.CharField(max_length=255)
