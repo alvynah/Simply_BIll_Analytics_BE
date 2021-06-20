@@ -7,8 +7,8 @@ from rest_framework.response import Response
 from rest_framework import generics
 from rest_framework import filters
 from rest_framework.parsers import JSONParser
-from django.http.response import JsonResponse
-from analyticsApi.serializers import SignUpSerializer, AdminSignUpSerializer,ActivationSerializer, ActivateSerializer
+from django.http.response import JsonResponse,Http404
+from analyticsApi.serializers import CurrentUserSerializer, SignUpSerializer, AdminSignUpSerializer,ActivationSerializer, ActivateSerializer
 from rest_framework import serializers,status
 from .models import *
 import datetime
@@ -72,7 +72,7 @@ class LoginApiView(APIView):
     }
     token = jwt.encode(payload, 'secret', algorithm='HS256')
     response = Response()
-    response.set_cookie(key='jwt',value=token,httponly=True)
+    response.set_cookie(key='jwt',value=token,httponly=True,secure=True, samesite="none")
     response.data = {"jwt": token}
     return response
 
@@ -87,7 +87,7 @@ class UserAPIView(APIView):
     except jwt.ExpiredSignatureError:
       raise AuthenticationFailed("Unauthenticated")
     user = User.objects.filter(userId=payload['id']).first()
-    serializer = SignUpSerializer(user)
+    serializer = CurrentUserSerializer(user)
     return Response(serializer.data)
 
 #Logout view
