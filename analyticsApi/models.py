@@ -1,6 +1,7 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from cloudinary.models import CloudinaryField
+from django.db.models.fields import related
 
 
 # Create your models here.
@@ -22,7 +23,7 @@ def upload_image(instance, filename):
     return "/".join(['images', str(instance.user.phone_number), filename])
 
 class Activation(models.Model):
-	user=models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
+	user=models.OneToOneField(User, on_delete=models.CASCADE,  related_name="activation", primary_key=True)
 	passport_photo=CloudinaryField('passport_photo')
 	identification_number=models.CharField(max_length=255)
 	identification_doc=CloudinaryField('passport/nationalID')
