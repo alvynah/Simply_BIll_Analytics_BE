@@ -61,8 +61,13 @@ class LoginApiView(APIView):
     phone_number = request.data['phone_number']
     password =request.data['password']
     user = User.objects.filter(phone_number=phone_number).first()
+    activation = Activation.objects.filter(user=user).first()
     if user is None:
       raise AuthenticationFailed("User not Found")
+    if activation is None:
+      raise AuthenticationFailed("Submit documents")  
+    elif user.is_valid == False:
+      raise AuthenticationFailed("wait for your documents to be approved") 
     if not user.check_password(password):
       raise AuthenticationFailed("incorrect password ")
     payload = {
@@ -72,7 +77,7 @@ class LoginApiView(APIView):
     }
     token = jwt.encode(payload, 'secret', algorithm='HS256')
     response = Response()
-    response.set_cookie(key='jwt',value=token,httponly=True,secure=True, samesite="none")
+    response.set_cookie(key='jwt',value=token,httponly=True)
     response.data = {"jwt": token}
     return response
 
