@@ -8,7 +8,7 @@ from rest_framework import generics
 from rest_framework import filters
 from rest_framework.parsers import JSONParser
 from django.http.response import JsonResponse,Http404
-from analyticsApi.serializers import CurrentUserSerializer, SignUpSerializer, AdminSignUpSerializer,ActivationSerializer, ActivateSerializer
+from analyticsApi.serializers import CurrentUserSerializer, SignUpSerializer, AdminSignUpSerializer,ActivationSerializer, ActivateSerializer, CurrentUserSerializer
 from rest_framework import serializers,status
 from .models import *
 import datetime
@@ -143,6 +143,15 @@ class ActivateUserApiView(APIView):
 
       return Response(valid_user)
     return Response(status.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class GetAllUsers(APIView):
+  serializer_class=CurrentUserSerializer
+
+  def get(self, request, format=None):
+    customer_users=User.objects.filter(is_valid=False, is_customer=True)
+    serializers=self.serializer_class(customer_users, many=True)
+    return Response(serializers.data)
 
 
 
