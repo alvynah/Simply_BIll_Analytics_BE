@@ -13,4 +13,5 @@ path('api/activation-post/<int:phone_number>/', views.ActivationApiView.as_view(
 path('api/activate-user/<int:phone_number>/', views.ActivateUserApiView.as_view(), name="ActivatingUser"),
 path('api/get-invalidcustomers/', views.GetAllUsers.as_view(), name="GetInvalidatedUsers"),
 
+path('api/user/activation-documents/<int:phone_number>/', views.GetOneUserDocuments.as_view(), name="Getone_user_documents"),
 ]
