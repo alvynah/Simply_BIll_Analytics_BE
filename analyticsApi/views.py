@@ -162,7 +162,6 @@ class GetAllUsers(APIView):
 class GetOneUserDocuments(APIView):
   serializers_class=ApprovalSerializer
 
-
   def get (self, request, phone_number, format=None):
     user = User.objects.filter(phone_number=phone_number).first()
     activation = Activation.objects.filter(user=user).first()
