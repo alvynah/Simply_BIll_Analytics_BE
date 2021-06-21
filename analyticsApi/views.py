@@ -81,6 +81,28 @@ class LoginApiView(APIView):
     response.data = {"jwt": token}
     return response
 
+class LoginAdminApiView(APIView):
+  def post(self, request):
+    phone_number = request.data['phone_number']
+    password =request.data['password']
+    user = User.objects.filter(phone_number=phone_number).first()
+    if user is None:
+      raise AuthenticationFailed("User not Found")
+    if  user.is_admin == False:
+      raise AuthenticationFailed("You have no admin rights!")  
+    if not user.check_password(password):
+      raise AuthenticationFailed("incorrect password ")
+    payload = {
+      'id':user.userId,
+      'exp':datetime.datetime.utcnow() + datetime.timedelta(minutes=60),
+      'iat': datetime.datetime.utcnow()
+    }
+    token = jwt.encode(payload, 'secret', algorithm='HS256')
+    response = Response()
+    response.set_cookie(key='jwt',value=token,httponly=True,samesite="none",secure=True)
+    response.data = {"jwt": token}
+    return response
+
 # fetching one user instance
 class UserAPIView(APIView):
   def get(self, request):
