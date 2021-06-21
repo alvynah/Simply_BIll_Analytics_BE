@@ -51,6 +51,11 @@ class ActivateSerializer(serializers.ModelSerializer):
     model = User
     fields = ['is_valid']
 
+class CurrentUserSerializer(serializers.ModelSerializer):
+  class Meta:
+    model = User
+    fields = "__all__"
+
 
 
 
