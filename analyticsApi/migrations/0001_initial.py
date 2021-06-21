@@ -50,7 +50,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Activation',
             fields=[
-                ('user', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, primary_key=True, serialize=False, to='analyticsApi.user')),
+                ('user', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, primary_key=True, related_name='activation', serialize=False, to='analyticsApi.user')),
                 ('passport_photo', cloudinary.models.CloudinaryField(max_length=255, verbose_name='passport_photo')),
                 ('identification_number', models.CharField(max_length=255)),
                 ('identification_doc', cloudinary.models.CloudinaryField(max_length=255, verbose_name='passport/nationalID')),
