@@ -17,7 +17,7 @@ class SignUpSerializer(serializers.ModelSerializer):
           if password is not None:
              instance.set_password(password)
           instance.is_customer=True  
-          # instance.is_active=False
+          instance.is_active=False
           instance.save()   
           return instance
 
@@ -49,7 +49,7 @@ class ActivationSerializer(serializers.ModelSerializer):
 class ActivateSerializer(serializers.ModelSerializer):
   class Meta:
     model = User
-    fields = ['is_valid']
+    fields = ['is_active']
 
 class CurrentUserSerializer(serializers.ModelSerializer):
   class Meta:

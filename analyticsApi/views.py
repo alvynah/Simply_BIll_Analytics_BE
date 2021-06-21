@@ -72,7 +72,7 @@ class LoginApiView(APIView):
     }
     token = jwt.encode(payload, 'secret', algorithm='HS256')
     response = Response()
-    response.set_cookie(key='jwt',value=token,httponly=True,secure=True, samesite="none")
+    response.set_cookie(key='jwt',value=token,httponly=True)
     response.data = {"jwt": token}
     return response
 
@@ -138,7 +138,7 @@ class ActivateUserApiView(APIView):
     user=self.get_user(phone_number)
     serializers=ActivateSerializer(user, request.data, partial=True)
     if serializers.is_valid(raise_exception=True):
-      serializers.save(is_valid=True)
+      serializers.save(is_active=True)
       valid_user=serializers.data
 
       return Response(valid_user)
