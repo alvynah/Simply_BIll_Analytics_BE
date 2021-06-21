@@ -11,5 +11,6 @@ path('api/user/current-user/', views.UserAPIView.as_view(), name="fetch-user"),
 path('logout/', views.LogoutAPIView.as_view(), name="logout"),
 path('api/activation-post/<int:phone_number>/', views.ActivationApiView.as_view(), name="ActivationPost"),
 path('api/activate-user/<int:phone_number>/', views.ActivateUserApiView.as_view(), name="ActivatingUser"),
+path('api/get-invalidcustomers/', views.GetAllUsers.as_view(), name="GetInvalidatedUsers"),
 
 ]
