@@ -59,6 +59,12 @@ class CurrentUserSerializer(serializers.ModelSerializer):
 
 
 
+class ApprovalSerializer(serializers.ModelSerializer):
+  class Meta:
+    model=Activation
+    fields = "__all__"
 
-
-
+  def to_representation(self, instance):
+        response = super().to_representation(instance)
+        response['user'] = CurrentUserSerializer(instance.user).data
+        return response
