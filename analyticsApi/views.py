@@ -8,7 +8,7 @@ from rest_framework import generics
 from rest_framework import filters
 from rest_framework.parsers import JSONParser
 from django.http.response import JsonResponse,Http404
-from analyticsApi.serializers import CurrentUserSerializer, SignUpSerializer, AdminSignUpSerializer,ActivationSerializer, ActivateSerializer, CurrentUserSerializer
+from analyticsApi.serializers import CurrentUserSerializer, SignUpSerializer, AdminSignUpSerializer,ActivationSerializer, ActivateSerializer, CurrentUserSerializer,ApprovalSerializer
 from rest_framework import serializers,status
 from .models import *
 import datetime
@@ -61,8 +61,13 @@ class LoginApiView(APIView):
     phone_number = request.data['phone_number']
     password =request.data['password']
     user = User.objects.filter(phone_number=phone_number).first()
+    activation = Activation.objects.filter(user=user).first()
     if user is None:
       raise AuthenticationFailed("User not Found")
+    if activation is None and user.is_admin == False:
+      raise AuthenticationFailed("Please Submit documents")  
+    elif user.is_valid == False:
+      raise AuthenticationFailed("Please wait for your documents to be approved") 
     if not user.check_password(password):
       raise AuthenticationFailed("incorrect password ")
     payload = {
@@ -152,6 +157,17 @@ class GetAllUsers(APIView):
     customer_users=User.objects.filter(is_valid=False, is_customer=True)
     serializers=self.serializer_class(customer_users, many=True)
     return Response(serializers.data)
+
+
+class GetOneUserDocuments(APIView):
+  serializers_class=ApprovalSerializer
+
+
+  def get (self, request, phone_number, format=None):
+    user = User.objects.filter(phone_number=phone_number).first()
+    activation = Activation.objects.filter(user=user).first()
+    serializer =self.serializers_class(activation)
+    return Response(serializer.data)
 
 
 

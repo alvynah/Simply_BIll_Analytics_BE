@@ -36,7 +36,8 @@ class AdminSignUpSerializer(serializers.ModelSerializer):
           instance =self.Meta.model(**validated_data)
           if password is not None:
              instance.set_password(password)
-          instance.is_admin=True  
+          instance.is_admin=True 
+          instance.is_valid=True 
           instance.save()   
           return instance
 
@@ -58,6 +59,12 @@ class CurrentUserSerializer(serializers.ModelSerializer):
 
 
 
+class ApprovalSerializer(serializers.ModelSerializer):
+  class Meta:
+    model=Activation
+    fields = "__all__"
 
-
-
+  def to_representation(self, instance):
+        response = super().to_representation(instance)
+        response['user'] = CurrentUserSerializer(instance.user).data
+        return response
