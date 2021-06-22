@@ -5,8 +5,5 @@ __pycache__/
 .env
 virtual/
 /virtual
-<<<<<<< HEAD
-virtual
-=======
-virtual
->>>>>>> 0e47cc57a6d2c27fe2e6c5be2a6b9da6eeaf3cca
+/migrations
+migrations
