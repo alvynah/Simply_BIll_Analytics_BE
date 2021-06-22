@@ -50,7 +50,7 @@ class ActivationSerializer(serializers.ModelSerializer):
 class ActivateSerializer(serializers.ModelSerializer):
   class Meta:
     model = User
-    fields = ['is_active']
+    fields = ['is_valid']
 
 class CurrentUserSerializer(serializers.ModelSerializer):
   class Meta:
