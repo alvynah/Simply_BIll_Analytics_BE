@@ -14,6 +14,8 @@ from .models import *
 import datetime
 import jwt
 from django.core.checks import messages
+from .email import *
+
 
 
 # Create your views here.
@@ -163,10 +165,14 @@ class ActivateUserApiView(APIView):
   # update user to a valid user
   def patch(self, request, phone_number, format=None):
     user=self.get_user(phone_number)
+    name=user.first_name
+    email=user.email
     serializers=ActivateSerializer(user, request.data, partial=True)
+    
     if serializers.is_valid(raise_exception=True):
       serializers.save(is_valid=True)
-      valid_user=serializers.data
+      send_success_email(name,email)
+      valid_user=serializers.data 
 
       return Response(valid_user)
     return Response(status.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -190,6 +196,53 @@ class GetOneUserDocuments(APIView):
     activation = Activation.objects.filter(user=user).first()
     serializer =self.serializers_class(activation)
     return Response(serializer.data)
+
+class NotifyUserToUpload(APIView):
+   def post(self,request, phone_number,format=None):
+    user = User.objects.get(phone_number=phone_number)
+
+    name=user.first_name
+    email=user.email
+    phone_number=user.phone_number
+
+    send_notify_email(name,email,phone_number)
+
+    response={
+        "data":{
+            "status":"success",
+            "message":"email sent successfully",
+        }
+      }
+    return Response(response, status=status.HTTP_201_CREATED)
+
+class NotifyUserToReupload(APIView):
+   def post(self,request, phone_number,format=None):
+    user = User.objects.get(phone_number=phone_number)
+    activation = Activation.objects.filter(user=user).first()
+    activation.delete()
+
+    name=user.first_name
+    email=user.email
+    phone_number=user.phone_number
+
+    send_notifyandDelete_email(name,email,phone_number)
+
+    response={
+        "data":{
+            "status":"success",
+            "message":"email sent successfully",
+        }
+      }
+    return Response(response, status=status.HTTP_201_CREATED)
+
+
+
+
+
+    
+
+  
+
 
 
 
