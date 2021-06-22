@@ -1,0 +1,4 @@
+Hello {{name}}
+
+There was a problem with your documentations. Re-upload the right documents for approval.
+Re-upload documents http://localhost:4200/activation/{{phone_number}} here
