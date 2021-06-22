@@ -1,0 +1,4 @@
+Hello {{name}}
+
+Kindly remember to upload your documents for approval before you can login
+Upload documents http://localhost:4200/activation/{{phone_number}} here

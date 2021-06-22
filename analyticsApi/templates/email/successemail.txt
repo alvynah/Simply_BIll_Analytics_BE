@@ -1,0 +1,3 @@
+Hello {{name}}
+
+Your documents have been approved successfully.Welcome to Digital 360.Login to Digital 360 http://localhost:4200/ here
