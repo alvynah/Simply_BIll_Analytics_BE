@@ -16,4 +16,5 @@ path('api/get-invalidcustomers/', views.GetAllUsers.as_view(), name="GetInvalida
 path('api/user/activation-documents/<int:phone_number>/', views.GetOneUserDocuments.as_view(), name="Getone_user_documents"),
 path('api/user/notify_email/<int:phone_number>/', views.NotifyUserToUpload.as_view(), name="notify_email"),
 path('api/user/notifyreupload_email/<int:phone_number>/', views.NotifyUserToReupload.as_view(), name="notify_email"),
+path('api/create-new-account/<int:phone_number>/', views.CreateNewAccount.as_view(), name="create_account"),
 ]

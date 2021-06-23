@@ -59,7 +59,7 @@ class Account(models.Model):
 	user=models.OneToOneField(User, on_delete=models.CASCADE, related_name="account")
 	account_name=models.CharField(max_length=255, null=True)
 	account_number=models.CharField(max_length=10, blank=True, editable=True,default=create_new_ref_number, null=True)
-	account_balance=models.IntegerField()
+	account_balance=models.IntegerField(default=0)
 
 
 	def __str__(self):

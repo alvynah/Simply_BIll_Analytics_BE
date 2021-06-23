@@ -8,7 +8,7 @@ from rest_framework import generics
 from rest_framework import filters
 from rest_framework.parsers import JSONParser
 from django.http.response import JsonResponse,Http404
-from analyticsApi.serializers import CurrentUserSerializer, SignUpSerializer, AdminSignUpSerializer,ActivationSerializer, ActivateSerializer, CurrentUserSerializer,ApprovalSerializer
+from analyticsApi.serializers import *
 from rest_framework import serializers,status
 from .models import *
 import datetime
@@ -236,6 +236,30 @@ class NotifyUserToReupload(APIView):
         }
       }
     return Response(response, status=status.HTTP_201_CREATED)
+
+class CreateNewAccount(generics.CreateAPIView):
+  serializer_class=CreateUserAccountSerializer
+
+  def post(self, request, phone_number, format=None):
+    user=User.objects.get(phone_number=phone_number)
+
+    serializer=self.serializer_class(data=request.data)
+    if serializer.is_valid(raise_exception=True):
+      serializer.save(user=user)
+
+      response={
+        "data":{
+            "Account_data":dict(serializer.data),
+            "status":"success",
+            "message":"Account created successfully",
+        }
+      }
+      return Response(response, status=status.HTTP_201_CREATED)
+    else:
+      return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+
 
 
 
