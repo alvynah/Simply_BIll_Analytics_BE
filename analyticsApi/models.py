@@ -4,6 +4,7 @@ from cloudinary.models import CloudinaryField
 from django.db.models.fields import related
 from phonenumber_field.modelfields import PhoneNumberField
 import uuid
+import random
 
 
 # Create your models here.
@@ -36,14 +37,26 @@ class Activation(models.Model):
 	def __str__(self):
 		return str(self.user.first_name)
 
+
+def create_new_ref_number():
+	not_unique=True
+	while not_unique:
+		unique_ref=random.randint(1000000000, 9999999999)
+		if not Account.objects.filter(account_number=unique_ref):
+			not_unique=False
+			return str(unique_ref)	
 class Account(models.Model):
 	user=models.OneToOneField(User, on_delete=models.CASCADE, related_name="account")
-	account_number= models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
-	account_name=models.CharField(max_length=250)
-	account_balance=models.IntegerField(default=0)
+	account_name=models.CharField(max_length=255, null=True)
+	account_number=models.CharField(max_length=10, blank=True, editable=True,default=create_new_ref_number, null=True)
+	account_balance=models.IntegerField()
+
 
 	def __str__(self):
-		return self.account_number
+		return self.account_name
+
+
+	
 
 
 	
