@@ -10,3 +10,6 @@ virtual
 _migrations/*
 migrations/
 /migrations
+/migrations
+migrations
+
