@@ -5,5 +5,11 @@ __pycache__/
 .env
 virtual/
 /virtual
+virtual/
+virtual
+_migrations/*
+migrations/
+/migrations
 /migrations
 migrations
+

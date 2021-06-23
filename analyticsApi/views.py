@@ -167,7 +167,7 @@ class ActivateUserApiView(APIView):
 
   # update user to a valid user
   def patch(self, request, phone_number, format=None):
-    user=self.get_user(phone_number)
+    user=self.get_user(phone_number=phone_number)
     name=user.first_name
     email=user.email
     serializers=ActivateSerializer(user, request.data, partial=True)
@@ -192,7 +192,6 @@ class GetAllUsers(APIView):
 
 class GetOneUserDocuments(APIView):
   serializers_class=ApprovalSerializer
-
 
   def get (self, request, phone_number, format=None):
     user = User.objects.filter(phone_number=phone_number).first()
