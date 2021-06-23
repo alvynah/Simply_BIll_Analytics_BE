@@ -64,9 +64,12 @@ class LoginApiView(APIView):
     password =request.data['password']
     user = User.objects.filter(phone_number=phone_number).first()
     activation = Activation.objects.filter(user=user).first()
+    name=user.first_name
+    email=user.email
     if user is None:
       raise AuthenticationFailed("User not Found")
     if activation is None and user.is_admin == False:
+      send_notify_email(name,email,phone_number)
       raise AuthenticationFailed("Please Submit documents")  
     elif user.is_valid == False:
       raise AuthenticationFailed("Please wait for your documents to be approved") 
