@@ -35,4 +35,14 @@ class Activation(models.Model):
 	def __str__(self):
 		return str(self.user.first_name)
 
+class Account(models.Model):
+	user=models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True, related_name="account")
+	account_number=models.IntegerField()
+	account_name=models.CharField(max_length=250)
+	account_balance=models.IntegerField()
+
+	def__str__(self):
+		return self.account_number
+
+
 	
