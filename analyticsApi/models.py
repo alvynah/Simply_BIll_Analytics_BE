@@ -2,6 +2,7 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 from cloudinary.models import CloudinaryField
 from django.db.models.fields import related
+from phonenumber_field.modelfields import PhoneNumberField
 
 
 # Create your models here.
