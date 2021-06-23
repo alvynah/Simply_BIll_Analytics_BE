@@ -4,7 +4,7 @@ from django.template.loader import render_to_string
 def send_notify_email(name,receiver,phone_number):
     # Creating message subject and sender
     subject = 'Upload Documents for approval'
-    sender = 'cocohvee@gmail.com'
+    sender = 'ekmuraya@gmail.com'
 
     #passing in the context vairables
     text_content = render_to_string('email/uploademail.txt',{"name": name,"phone_number":phone_number})
