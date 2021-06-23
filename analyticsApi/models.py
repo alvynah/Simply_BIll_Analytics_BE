@@ -3,6 +3,7 @@ from django.db import models
 from cloudinary.models import CloudinaryField
 from django.db.models.fields import related
 from phonenumber_field.modelfields import PhoneNumberField
+import uuid
 
 
 # Create your models here.
@@ -36,12 +37,12 @@ class Activation(models.Model):
 		return str(self.user.first_name)
 
 class Account(models.Model):
-	user=models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True, related_name="account")
-	account_number=models.IntegerField()
+	user=models.OneToOneField(User, on_delete=models.CASCADE, related_name="account")
+	account_number= models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
 	account_name=models.CharField(max_length=250)
-	account_balance=models.IntegerField()
+	account_balance=models.IntegerField(default=0)
 
-	def__str__(self):
+	def __str__(self):
 		return self.account_number
 
 
