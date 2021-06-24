@@ -6,3 +6,11 @@ __pycache__/
 virtual/
 /virtual
 migrations/
+virtual/
+virtual
+_migrations/*
+migrations/
+/migrations
+/migrations
+migrations
+
