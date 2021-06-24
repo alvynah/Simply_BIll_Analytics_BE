@@ -55,6 +55,8 @@ def create_new_ref_number():
 		if not Account.objects.filter(account_number=unique_ref):
 			not_unique=False
 			return str(unique_ref)	
+
+			
 class Account(models.Model):
 	user=models.OneToOneField(User, on_delete=models.CASCADE, related_name="account")
 	account_name=models.CharField(max_length=255, null=True)

@@ -259,6 +259,16 @@ class CreateNewAccount(generics.CreateAPIView):
       return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+class GetUserAccountDetails(generics.CreateAPIView):
+  serializer_class=UserAccountSerializer
+
+  def get (self, request, phone_number, format=None):
+    user = User.objects.filter(phone_number=phone_number).first()
+    account = Account.objects.filter(user=user).first()
+    serializer =self.serializer_class(account)
+    return Response(serializer.data)
+
+
 
 
 
