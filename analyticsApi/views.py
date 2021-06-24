@@ -82,7 +82,7 @@ class LoginApiView(APIView):
     }
     token = jwt.encode(payload, 'secret', algorithm='HS256')
     response = Response()
-    response.set_cookie(key='jwt',value=token,httponly=True,samesite="none",secure=True)
+    response.set_cookie(key='jwt',value=token,httponly=True, samesite="none",secure=True)
     response.data = {"jwt": token}
     return response
 
@@ -113,7 +113,7 @@ class UserAPIView(APIView):
   def get(self, request):
     token = request.COOKIES.get('jwt')
     if not token:
-      raise AuthenticationFailed("Unauthenticated")
+      raise AuthenticationFailed("Unauthenticated Not Token")
     try:
         payload = jwt.decode(token, 'secret', algorithms=['HS256'])
     except jwt.ExpiredSignatureError:

@@ -50,7 +50,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'corsheaders',
     'cloudinary',
-     "phonenumber_field",
+    # new application for mpesa
+    'mpesa_api.apps.MpesaApiConfig',
 ]
 
 MIDDLEWARE = [
@@ -152,8 +153,6 @@ USE_TZ = True
 
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS =True
-
-
 
 cloudinary.config( 
   cloud_name = config('CLOUD_NAME'), 
