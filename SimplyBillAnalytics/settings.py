@@ -51,7 +51,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'cloudinary',
     # new application for mpesa
-    'mpesa_api.apps.MpesaApiConfig',
+    'mpesa_api',
 ]
 
 MIDDLEWARE = [
