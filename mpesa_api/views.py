@@ -44,10 +44,10 @@ def register_urls(request):
     access_token=MpesaAccessToken.validated_mpesa_access_token
     api_url="https://sandbox.safaricom.co.ke/mpesa/c2b/v1/registerurl"
     headers={"Authorization": "Bearer %s" % access_token}
-    options={"ShortCode":LipanaMpesaPassword.Business_short_code,
+    options={"ShortCode":LipanaMpesaPassword.Test_c2b_shortcode,
              "ResponseType":"Completed",
-             "ConfirmationURL":"http://127.0.0.1:8000/api/v1/c2b/confirmation",
-             "ValidationURL":"http://127.0.0.1:8000/api/v1/c2b/validation"}
+             "ConfirmationURL":"https://7b834d6c927b.ngrok.io/api/v1/c2b/confirmation",
+             "ValidationURL":"https://7b834d6c927b.ngrok.io/api/v1/c2b/validation"}
 
     response=requests.post(api_url, json=options, headers=headers)
     return HttpResponse(response.text)
@@ -89,3 +89,18 @@ def confirmation(request):
         "ResultDesc":"Accepted"
     }
     return JsonResponse(dict(context))
+
+@csrf_exempt
+def simulate_transaction_c2b(request):
+    access_token=MpesaAccessToken.validated_mpesa_access_token
+    api_url="https://sandbox.safaricom.co.ke/mpesa/c2b/v1/simulate"
+    headers={"Authorization": "Bearer %s" % access_token}
+    options={"ShortCode":LipanaMpesaPassword.Test_c2b_shortcode,
+            "CommandID":"CustomerPayBillOnline",
+            "Amount":1,
+            "Msisdn":254708374149,
+            "BillRefNumber":"12345678"
+            }
+
+    response=requests.post(api_url, json=options, headers=headers)
+    return HttpResponse(response.text)
