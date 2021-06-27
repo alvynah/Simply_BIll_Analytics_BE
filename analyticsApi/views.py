@@ -104,7 +104,7 @@ class LoginAdminApiView(APIView):
     }
     token = jwt.encode(payload, 'secret', algorithm='HS256')
     response = Response()
-    response.set_cookie(key='jwt',value=token,httponly=True,samesite="none",secure=True)
+    response.set_cookie(key='jwt',value=token,httponly=True)
     response.data = {"jwt": token}
     return response
 
