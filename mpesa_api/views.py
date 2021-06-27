@@ -102,9 +102,7 @@ def confirmation(request):
 
                 transaction_datetime = datetime.strptime(str_transaction_date, "%Y%m%d%H%M%S")
                 print(transaction_datetime, "this should be an transaction_datetime")
-
-                aware_transaction_datetime = pytz.utc.localize(transaction_datetime)
-                print(aware_transaction_datetime, "this should be an aware_transaction_datetime")
+               
 
             if data.get('Name')=="PhoneNumber":
                 phone_number=data.get('Value')
@@ -112,7 +110,7 @@ def confirmation(request):
         payment=MpesaPayment(
             amount=amount,
             receipt_number=receipt_number,
-            transaction_date=aware_transaction_datetime,
+            transaction_date=transaction_datetime,
             phone_number=phone_number,
         )
         payment.save()
