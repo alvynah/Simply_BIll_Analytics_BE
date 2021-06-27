@@ -1,1 +1,1 @@
-web: gunicorn analyticsApi.wsgi
+web: gunicorn SimplyBillAnalytics.wsgi
