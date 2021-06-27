@@ -79,16 +79,46 @@ def confirmation(request):
 
     print(mpesa_payment)
 
+    def post(self, request):
+        # save the data
+        request_data = json.dumps(request.data)
+        request_data = json.loads(request_data)
+        body = request_data.get('Body')
+        resultcode = body.get('stkCallback').get('ResultCode')
+        # Perform your processing here e.g. print it out...
+        if resultcode == 0:
+            print('Payment successful')
+            requestId = body.get('stkCallback').get('CheckoutRequestID')
+            metadata = body.get('stkCallback').get('CallbackMetadata').get('Item')
+            for data in metadata:
+                if data.get('Name') == "MpesaReceiptNumber":
+                    receipt_number = data.get('Value')
+                if data.get('Name')=="Amount":
+                    amount=data.get('Value')
+                if data.get('Name')=="TransactionDate":
+                    transaction_date=data.get('Value')
+                if data.get('Name')=="PhoneNumber":
+                    phone_number=data.get('Value')
+        else:
+            print('unsuccessfull')
+
+    from datetime import datetime
+
+    str_transaction_date = str(transaction_date)
+    print(str_transaction_date, "this should be an str_transaction_date")
+
+    transaction_datetime = datetime.strptime(str_transaction_date, "%Y%m%d%H%M%S")
+    print(transaction_datetime, "this should be an transaction_datetime")
+
+    import pytz
+    aware_transaction_datetime = pytz.utc.localize(transaction_datetime)
+    print(aware_transaction_datetime, "this should be an aware_transaction_datetime")
+
     payment=MpesaPayment(
-        first_name=mpesa_payment['FirstName'],
-        last_name=mpesa_payment['LastName'],
-        middle_name=mpesa_payment['MiddleName'],
-        description=mpesa_payment['TransID'],
-        phone_number=mpesa_payment['MSISDN'],
-        amount=mpesa_payment['TransAmount'],
-        reference=mpesa_payment["BillRefNumber"],
-        organization_balance=mpesa_payment['OrgAccountBalance'],
-        type=mpesa_payment['TransactionType'],
+        amount=amount,
+        receipt_number=receipt_number,
+        transaction_date=aware_transaction_datetime,
+        phone_number=phone_number,
     )
     payment.save()
 

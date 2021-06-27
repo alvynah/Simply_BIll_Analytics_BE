@@ -53,8 +53,6 @@ INSTALLED_APPS = [
     'cloudinary',
     # new application for mpesa
     'mpesa_api',
-    # pip install django-mpesa
-    'mpesa'
 ]
 
 MIDDLEWARE = [

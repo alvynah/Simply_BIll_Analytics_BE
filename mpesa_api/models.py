@@ -31,18 +31,13 @@ class MpesaCallBacks(BaseModel):
 
 class MpesaPayment(BaseModel):
     amount=models.DecimalField(max_digits=10, decimal_places=2)
-    description=models.TextField()
-    type=models.TextField()
-    reference=models.TextField()
-    first_name=models.CharField(max_length=225)
-    middle_name=models.CharField(max_length=225)
-    last_name=models.CharField(max_length=225)
-    phone_number=models.TextField()
-    organization_balance=models.DecimalField(max_digits=10, decimal_places=2)
+    receipt_number=models.CharField(max_length=50, default="")
+    phone_number=models.IntegerField()
+    transaction_date = models.DateTimeField(blank=True, null=True)
 
     class Meta:
         verbose_name="Mpesa Payment"
         verbose_name_plural="Mpesa Payments"
 
     def __str__(self):
-        return self.first_name
+        return self.phone_number
