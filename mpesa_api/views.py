@@ -111,17 +111,17 @@ def confirmation(request):
 
                 if data.get('Name')=="PhoneNumber":
                     phone_number=data.get('Value')
+
+                payment=MpesaPayment(
+                amount=amount,
+                receipt_number=receipt_number,
+                transaction_date=aware_transaction_datetime,
+                phone_number=phone_number,
+                )
+                payment.save()
+                
         else:
             print('unsuccessfull')
-
-
-    payment=MpesaPayment(
-        amount=amount,
-        receipt_number=receipt_number,
-        transaction_date=aware_transaction_datetime,
-        phone_number=phone_number,
-    )
-    payment.save()
 
     context={
         "ResultCode":0,
