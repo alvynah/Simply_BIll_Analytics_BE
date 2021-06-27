@@ -32,7 +32,7 @@ class MpesaCallBacks(BaseModel):
 class MpesaPayment(BaseModel):
     amount=models.DecimalField(max_digits=10, decimal_places=2)
     receipt_number=models.CharField(max_length=50, default="")
-    phone_number=models.IntegerField()
+    phone_number=models.CharField(max_length=255)
     transaction_date = models.DateTimeField(blank=True, null=True)
 
     class Meta:
