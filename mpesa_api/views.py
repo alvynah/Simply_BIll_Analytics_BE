@@ -37,12 +37,12 @@ def lipa_na_mpesa_online(request):
         "PartyA":254724053594,
         "PartyB":LipanaMpesaPassword.Business_short_code,
         "PhoneNumber":254724053594,
-        "CallBackURL":"https://sandbox.safaricom.co.ke/mpesa/",
+        "CallBackURL":"https://mpesa-payments.herokuapp.com/api/v1/c2b/confirmation",
         "AccountReference":"Alice",
         "TransactionDesc":"Testing stk push"
     }
     response=requests.post(api_url, json=request, headers=headers)
-    print(request)
+    # print(request)
     return HttpResponse('success')
 
 @csrf_exempt
@@ -52,8 +52,8 @@ def register_urls(request):
     headers={"Authorization": "Bearer %s" % access_token}
     options={"ShortCode":LipanaMpesaPassword.Test_c2b_shortcode,
              "ResponseType":"Completed",
-             "ConfirmationURL":"https://96b88ebc9aed.ngrok.io/api/v1/c2b/confirmation",
-             "ValidationURL":"https://96b88ebc9aed.ngrok.io/api/v1/c2b/validation"}
+             "ConfirmationURL":"https://mpesa-payments.herokuapp.com/api/v1/c2b/confirmation",
+             "ValidationURL":"https://mpesa-payments.herokuapp.com/api/v1/c2b/validation"}
 
     response=requests.post(api_url, json=options, headers=headers)
     return HttpResponse(response.text)
