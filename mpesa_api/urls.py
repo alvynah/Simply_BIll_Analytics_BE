@@ -11,4 +11,6 @@ urlpatterns=[
     path('c2b/validation', views.validation, name="validation"),
     path('c2b/callback', views.call_back, name="call_back"),
     path('c2b/paybill-payment', views.simulate_transaction_c2b, name="simulate-paybill-from-sim-toolkit"),
+
+
 ]

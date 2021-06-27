@@ -6,6 +6,11 @@ import json
 from . mpesa_credentials import MpesaAccessToken, LipanaMpesaPassword
 from .models import MpesaPayment
 from django.views.decorators.csrf import csrf_exempt
+from mpesa_api.serializers import *
+from mpesa_api.models import *
+# from rest_framework.views import APIView
+from rest_framework.views import APIView
+from rest_framework import generics
 
 # Create your views here.
 def getAccessToken(request):
@@ -37,6 +42,7 @@ def lipa_na_mpesa_online(request):
         "TransactionDesc":"Testing stk push"
     }
     response=requests.post(api_url, json=request, headers=headers)
+    print(request)
     return HttpResponse('success')
 
 @csrf_exempt
@@ -46,8 +52,8 @@ def register_urls(request):
     headers={"Authorization": "Bearer %s" % access_token}
     options={"ShortCode":LipanaMpesaPassword.Test_c2b_shortcode,
              "ResponseType":"Completed",
-             "ConfirmationURL":"https://7b834d6c927b.ngrok.io/api/v1/c2b/confirmation",
-             "ValidationURL":"https://7b834d6c927b.ngrok.io/api/v1/c2b/validation"}
+             "ConfirmationURL":"https://96b88ebc9aed.ngrok.io/api/v1/c2b/confirmation",
+             "ValidationURL":"https://96b88ebc9aed.ngrok.io/api/v1/c2b/validation"}
 
     response=requests.post(api_url, json=options, headers=headers)
     return HttpResponse(response.text)
@@ -104,3 +110,4 @@ def simulate_transaction_c2b(request):
 
     response=requests.post(api_url, json=options, headers=headers)
     return HttpResponse(response.text)
+
