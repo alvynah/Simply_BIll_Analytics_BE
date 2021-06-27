@@ -76,10 +76,12 @@ def validation(request):
 
 @csrf_exempt
 def confirmation(request):  
+    mpesa_body =request.body.decode('utf-8')
+    mpesa_payment = json.loads(mpesa_body)
     # save the data
-    request_data = json.dumps(request.data)
-    request_data = json.loads(request_data)
-    body = request_data.get('Body')
+    # request_data = json.dumps(request.data)
+    # request_data = json.loads(request_data)
+    body = mpesa_payment.get('Body')
     print(body)
     resultcode = body.get('stkCallback').get('ResultCode')
     # Perform your processing here e.g. print it out...
