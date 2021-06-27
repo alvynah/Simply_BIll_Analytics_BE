@@ -75,53 +75,48 @@ def validation(request):
     return JsonResponse(dict(context))
 
 @csrf_exempt
-def confirmation(request):
-    mpesa_body=request.body.decode('utf-8')
-    mpesa_payment=json.loads(mpesa_body)
+def confirmation(request):  
+    # save the data
+    request_data = json.dumps(request.data)
+    request_data = json.loads(request_data)
+    body = request_data.get('Body')
+    print(body)
+    resultcode = body.get('stkCallback').get('ResultCode')
+    # Perform your processing here e.g. print it out...
+    if resultcode == 0:
+        print('Payment successful')
+        requestId = body.get('stkCallback').get('CheckoutRequestID')
+        metadata = body.get('stkCallback').get('CallbackMetadata').get('Item')
+        for data in metadata:
+            if data.get('Name') == "MpesaReceiptNumber":
+                receipt_number = data.get('Value')
+            if data.get('Name')=="Amount":
+                amount=data.get('Value')
+            if data.get('Name')=="TransactionDate":
+                transaction_date=data.get('Value')
 
-    print(mpesa_payment)
+                str_transaction_date = str(transaction_date)
+                print(str_transaction_date, "this should be an str_transaction_date")
 
-    def post(self, request):
-        # save the data
-        request_data = json.dumps(request.data)
-        request_data = json.loads(request_data)
-        body = request_data.get('Body')
-        resultcode = body.get('stkCallback').get('ResultCode')
-        # Perform your processing here e.g. print it out...
-        if resultcode == 0:
-            print('Payment successful')
-            requestId = body.get('stkCallback').get('CheckoutRequestID')
-            metadata = body.get('stkCallback').get('CallbackMetadata').get('Item')
-            for data in metadata:
-                if data.get('Name') == "MpesaReceiptNumber":
-                    receipt_number = data.get('Value')
-                if data.get('Name')=="Amount":
-                    amount=data.get('Value')
-                if data.get('Name')=="TransactionDate":
-                    transaction_date=data.get('Value')
+                transaction_datetime = datetime.strptime(str_transaction_date, "%Y%m%d%H%M%S")
+                print(transaction_datetime, "this should be an transaction_datetime")
 
-                    str_transaction_date = str(transaction_date)
-                    print(str_transaction_date, "this should be an str_transaction_date")
+                aware_transaction_datetime = pytz.utc.localize(transaction_datetime)
+                print(aware_transaction_datetime, "this should be an aware_transaction_datetime")
 
-                    transaction_datetime = datetime.strptime(str_transaction_date, "%Y%m%d%H%M%S")
-                    print(transaction_datetime, "this should be an transaction_datetime")
+            if data.get('Name')=="PhoneNumber":
+                phone_number=data.get('Value')
 
-                    aware_transaction_datetime = pytz.utc.localize(transaction_datetime)
-                    print(aware_transaction_datetime, "this should be an aware_transaction_datetime")
-
-                if data.get('Name')=="PhoneNumber":
-                    phone_number=data.get('Value')
-
-            payment=MpesaPayment(
-                amount=amount,
-                receipt_number=receipt_number,
-                transaction_date=aware_transaction_datetime,
-                phone_number=phone_number,
-            )
-            payment.save()
+        payment=MpesaPayment(
+            amount=amount,
+            receipt_number=receipt_number,
+            transaction_date=aware_transaction_datetime,
+            phone_number=phone_number,
+        )
+        payment.save()
                 
-        else:
-            print('unsuccessfull')
+    else:
+        print('unsuccessfull')
 
     context={
         "ResultCode":0,
