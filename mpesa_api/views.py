@@ -112,6 +112,7 @@ def confirmation(request):
             receipt_number=receipt_number,
             transaction_date=transaction_datetime,
             phone_number=phone_number,
+            category='electricity'
         )
         payment.save()
                 

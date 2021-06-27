@@ -39,7 +39,6 @@ class MpesaPayment(BaseModel):
         ('school fees','school fees'),
         ('electricity','electricity')
 
-
     ])
     
     class Meta:
