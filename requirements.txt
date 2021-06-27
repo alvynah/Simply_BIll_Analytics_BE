@@ -6,8 +6,11 @@ config==0.5.0.post0
 dj-database-url==0.5.0
 Django==3.2.4
 django-cors-headers==3.7.0
+django-heroku==0.3.1
+django-mpesa==2.0.5
 django-phonenumber-field==5.2.0
 djangorestframework==3.12.4
+gunicorn==20.1.0
 idna==2.10
 phonenumberslite==8.12.25
 Pillow==8.2.0
@@ -20,3 +23,4 @@ six==1.16.0
 sqlparse==0.4.1
 typing-extensions==3.10.0.0
 urllib3==1.26.5
+whitenoise==5.2.0
