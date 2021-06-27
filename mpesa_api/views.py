@@ -11,6 +11,8 @@ from mpesa_api.models import *
 # from rest_framework.views import APIView
 from rest_framework.views import APIView
 from rest_framework import generics
+from datetime import datetime
+import pytz
 
 # Create your views here.
 def getAccessToken(request):
@@ -97,22 +99,21 @@ def confirmation(request):
                     amount=data.get('Value')
                 if data.get('Name')=="TransactionDate":
                     transaction_date=data.get('Value')
+
+                    str_transaction_date = str(transaction_date)
+                    print(str_transaction_date, "this should be an str_transaction_date")
+
+                    transaction_datetime = datetime.strptime(str_transaction_date, "%Y%m%d%H%M%S")
+                    print(transaction_datetime, "this should be an transaction_datetime")
+
+                    aware_transaction_datetime = pytz.utc.localize(transaction_datetime)
+                    print(aware_transaction_datetime, "this should be an aware_transaction_datetime")
+
                 if data.get('Name')=="PhoneNumber":
                     phone_number=data.get('Value')
         else:
             print('unsuccessfull')
 
-    from datetime import datetime
-
-    str_transaction_date = str(transaction_date)
-    print(str_transaction_date, "this should be an str_transaction_date")
-
-    transaction_datetime = datetime.strptime(str_transaction_date, "%Y%m%d%H%M%S")
-    print(transaction_datetime, "this should be an transaction_datetime")
-
-    import pytz
-    aware_transaction_datetime = pytz.utc.localize(transaction_datetime)
-    print(aware_transaction_datetime, "this should be an aware_transaction_datetime")
 
     payment=MpesaPayment(
         amount=amount,
