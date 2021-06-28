@@ -1,5 +1,6 @@
 from django.urls import path,re_path
 from django.urls.resolvers import URLPattern
+from rest_framework.generics import DestroyAPIView
 from . import views
 
 
@@ -19,4 +20,5 @@ path('api/user/notifyreupload_email/<int:phone_number>/', views.NotifyUserToReup
 path('api/get-account-details/<int:phone_number>/', views.GetUserAccountDetails.as_view(), name="get-account-details"),
 path('api/create-new-account/<int:phone_number>/', views.CreateNewAccount.as_view(), name="create_account"),
 path('api/maketransaction/<int:phone_number>/', views.MakeTransactions.as_view(), name="make-transaction"),
+path('api/deposit/<int:phone_number>/', views.DepositApiView.as_view(), name="deposit"),
 ]
