@@ -5,6 +5,7 @@ __pycache__/
 .env
 virtual/
 /virtual
+migrations/
 virtual/
 virtual
 _migrations/*
