@@ -105,7 +105,7 @@ class LoginAdminApiView(APIView):
     }
     token = jwt.encode(payload, 'secret', algorithm='HS256')
     response = Response()
-    response.set_cookie(key='jwt',value=token,httponly=True,samesite="none",secure=True)
+    response.set_cookie(key='jwt',value=token,httponly=True)
     response.data = {"jwt": token}
     return response
 
@@ -308,6 +308,32 @@ class MakeTransactions(generics.CreateAPIView):
       return Response(response, status=status.HTTP_201_CREATED)
     else:
       return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+class DepositApiView(APIView):
+
+  def patch(self, request,phone_number, format=None):
+    user=User.objects.get(phone_number=phone_number)
+    sendUser=Account.objects.get(user=user)
+    current_bal=sendUser.account_balance
+    new_bal = current_bal + int(request.data['account_balance'])
+
+
+    serializers=DepositSerializer(sendUser,request.data,partial=True)
+
+    if serializers.is_valid(raise_exception=True):
+      serializers.save(account_balance=new_bal)
+
+      return Response(serializers.data)
+    return Response(status.errors, status=status.HTTP_400_BAD_REQUEST)  
+
+
+
+
+
+
+
 
 
 
