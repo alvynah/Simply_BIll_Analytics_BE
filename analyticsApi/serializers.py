@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import User, Activation
+from .models import *
 from django import forms
 
 
@@ -68,3 +68,29 @@ class ApprovalSerializer(serializers.ModelSerializer):
         response = super().to_representation(instance)
         response['user'] = CurrentUserSerializer(instance.user).data
         return response
+
+class UserAccountSerializer(serializers.ModelSerializer):
+  class Meta:
+    model=Account
+    fields="__all__"
+
+  def to_representation(self, instance):
+        response = super().to_representation(instance)
+        response['user'] = CurrentUserSerializer(instance.user).data
+        return response
+
+
+class CreateUserAccountSerializer(serializers.ModelSerializer):
+  class Meta:
+    model=Account
+    exclude = ['user', 'acc_number', 'account_balance']
+
+class MakePaymentSerializer(serializers.ModelSerializer):
+  class Meta:
+    model=Transaction
+    exclude=['account']
+
+    # def to_representation(self, instance):
+    #   response = super().to_representation(instance)
+    #   response['user'] = CurrentUserSerializer(instance.user).data
+    #   return response

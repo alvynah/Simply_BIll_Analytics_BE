@@ -8,7 +8,7 @@ from rest_framework import generics
 from rest_framework import filters
 from rest_framework.parsers import JSONParser
 from django.http.response import JsonResponse,Http404
-from analyticsApi.serializers import CurrentUserSerializer, SignUpSerializer, AdminSignUpSerializer,ActivationSerializer, ActivateSerializer, CurrentUserSerializer,ApprovalSerializer
+from analyticsApi.serializers import *
 from rest_framework import serializers,status
 from .models import *
 import datetime
@@ -83,7 +83,7 @@ class LoginApiView(APIView):
     }
     token = jwt.encode(payload, 'secret', algorithm='HS256')
     response = Response()
-    response.set_cookie(key='jwt',value=token,httponly=True,samesite="none",secure=True)
+    response.set_cookie(key='jwt',value=token,httponly=True, samesite="none",secure=True)
     response.data = {"jwt": token}
     return response
 
@@ -114,7 +114,7 @@ class UserAPIView(APIView):
   def get(self, request):
     token = request.COOKIES.get('jwt')
     if not token:
-      raise AuthenticationFailed("Unauthenticated")
+      raise AuthenticationFailed("Unauthenticated Not Token")
     try:
         payload = jwt.decode(token, 'secret', algorithms=['HS256'])
     except jwt.ExpiredSignatureError:
@@ -237,6 +237,81 @@ class NotifyUserToReupload(APIView):
         }
       }
     return Response(response, status=status.HTTP_201_CREATED)
+
+class CreateNewAccount(generics.CreateAPIView):
+  serializer_class=CreateUserAccountSerializer
+
+  def post(self, request, phone_number, format=None):
+    user=User.objects.get(phone_number=phone_number)
+
+    serializer=self.serializer_class(data=request.data)
+    if serializer.is_valid(raise_exception=True):
+      serializer.save(user=user)
+
+      response={
+        "data":{
+            "Account_data":dict(serializer.data),
+            "status":"success",
+            "message":"Account created successfully",
+        }
+      }
+      return Response(response, status=status.HTTP_201_CREATED)
+    else:
+      return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class GetUserAccountDetails(generics.CreateAPIView):
+  serializer_class=UserAccountSerializer
+
+  def get (self, request, phone_number, format=None):
+    user = User.objects.filter(phone_number=phone_number).first()
+    account = Account.objects.filter(user=user).first()
+    serializer =self.serializer_class(account)
+    return Response(serializer.data)
+
+
+class MakeTransactions(generics.CreateAPIView):
+  serializer_class=MakePaymentSerializer
+
+  def post(self,request, phone_number,format=None):
+    user=User.objects.get(phone_number=phone_number)
+    senderUser=Account.objects.get(user=user)
+
+    serializer=self.serializer_class(data=request.data)
+
+    user=User.objects.get(phone_number=phone_number)
+    senderUser=Account.objects.get(user=user)
+    current_balance=senderUser.account_balance
+
+    transaction_amount=int(request.data['amount'])
+
+    if current_balance < transaction_amount:
+      return Response('You do not have enough funds to make this transaction', status=status.HTTP_400_BAD_REQUEST)
+    else:
+      new_balance=current_balance-transaction_amount
+      senderUser.account_balance=new_balance
+      senderUser.save()
+    if serializer.is_valid(raise_exception=True):
+
+      serializer.save(account=senderUser)
+
+      transaction_data =serializer.data
+      response={
+        "data":{
+            "transaction":dict(transaction_data),
+            "status":"success",
+            "message":"transaction done successfully",
+        }
+      }
+      
+   
+      return Response(response, status=status.HTTP_201_CREATED)
+    else:
+      return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+
 
 
 
