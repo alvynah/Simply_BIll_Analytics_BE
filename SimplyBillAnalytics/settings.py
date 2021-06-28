@@ -51,8 +51,6 @@ INSTALLED_APPS = [
     'rest_framework',
     'corsheaders',
     'cloudinary',
-    # new application for mpesa
-    'mpesa_api',
 ]
 
 MIDDLEWARE = [
