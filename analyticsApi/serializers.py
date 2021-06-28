@@ -83,4 +83,14 @@ class UserAccountSerializer(serializers.ModelSerializer):
 class CreateUserAccountSerializer(serializers.ModelSerializer):
   class Meta:
     model=Account
-    exclude = ['user', 'account_number', 'account_balance']
+    exclude = ['user', 'acc_number', 'account_balance']
+
+class MakePaymentSerializer(serializers.ModelSerializer):
+  class Meta:
+    model=Transaction
+    exclude=['account']
+
+    # def to_representation(self, instance):
+    #   response = super().to_representation(instance)
+    #   response['user'] = CurrentUserSerializer(instance.user).data
+    #   return response
