@@ -63,7 +63,7 @@ class Category(models.Model):
 
 
 class Transaction(models.Model):
-	recipient_account = models.ForeignKey(Account,related_name='recipient', on_delete=models.CASCADE)
+	recipient_account = models.CharField(max_length=255)
 	recipient_name = models.CharField(max_length=255 ,null=True)
 	amount = models.IntegerField()
 	category =models.ForeignKey(Category,related_name='category',on_delete=models.CASCADE)
@@ -71,10 +71,4 @@ class Transaction(models.Model):
 
 	def __str__(self):
 		return str(self.account.user.first_name)
-
-
-
-
-
-
 
