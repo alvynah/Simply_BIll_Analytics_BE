@@ -68,3 +68,4 @@ class ApprovalSerializer(serializers.ModelSerializer):
         response = super().to_representation(instance)
         response['user'] = CurrentUserSerializer(instance.user).data
         return response
+        
