@@ -1,3 +1,4 @@
+from django.db.models.base import Model
 from rest_framework import serializers
 from .models import *
 from django import forms
@@ -94,3 +95,10 @@ class MakePaymentSerializer(serializers.ModelSerializer):
     #   response = super().to_representation(instance)
     #   response['user'] = CurrentUserSerializer(instance.user).data
     #   return response
+
+
+class DepositSerializer(serializers.ModelSerializer):
+
+  class Meta:
+    model=Account
+    fields= ["account_balance"] 
