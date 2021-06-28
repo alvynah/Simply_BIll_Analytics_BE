@@ -246,6 +246,8 @@ class CreateNewAccount(generics.CreateAPIView):
 
     serializer=self.serializer_class(data=request.data)
     if serializer.is_valid(raise_exception=True):
+      user.has_account = True
+      user.save()
       serializer.save(user=user)
 
       response={

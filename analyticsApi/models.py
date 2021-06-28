@@ -16,7 +16,7 @@ class User(AbstractUser):
 	is_customer=models.BooleanField(default=False)
 	is_admin=models.BooleanField(default=False)
 	is_valid=models.BooleanField(default=False)
-	has_account=models.BooleanField(default=False)
+	has_account = models.BooleanField(default=False)
 
 
 	REQUIRED_FIELDS=[]
