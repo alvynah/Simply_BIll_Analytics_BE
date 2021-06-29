@@ -91,14 +91,17 @@ class MakePaymentSerializer(serializers.ModelSerializer):
     model=Transaction
     exclude=['account']
 
-    # def to_representation(self, instance):
-    #   response = super().to_representation(instance)
-    #   response['user'] = CurrentUserSerializer(instance.user).data
-    #   return response
-
+   
 
 class DepositSerializer(serializers.ModelSerializer):
 
   class Meta:
     model=Account
     fields= ["account_balance"] 
+
+class CategorySerializer(serializers.ModelSerializer):
+
+  class Meta :
+    model = Category
+    fields="__all__"
+
