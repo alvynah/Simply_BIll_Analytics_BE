@@ -69,6 +69,7 @@ class Transaction(models.Model):
 	amount = models.IntegerField()
 	category =models.ForeignKey(Category,related_name='category',on_delete=models.CASCADE)
 	account = models.ForeignKey(Account,related_name='transaction' ,on_delete=models.CASCADE)
+	trans_date = models.DateTimeField(auto_now_add=True)
 
 	def __str__(self):
 		return str(self.account.user.first_name)
