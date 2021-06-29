@@ -96,7 +96,6 @@ class MakePaymentSerializer(serializers.ModelSerializer):
       response['category'] = CategorySerializer(instance.category).data
       return response
 
-
    
 
 class DepositSerializer(serializers.ModelSerializer):
