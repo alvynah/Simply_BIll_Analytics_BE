@@ -105,7 +105,7 @@ class LoginAdminApiView(APIView):
     }
     token = jwt.encode(payload, 'secret', algorithm='HS256')
     response = Response()
-    response.set_cookie(key='jwt',value=token,httponly=True)
+    response.set_cookie(key='jwt',value=token,httponly=True,samesite="none",secure=True)
     response.data = {"jwt": token}
     return response
 
@@ -328,7 +328,56 @@ class DepositApiView(APIView):
       serializers.save(account_balance=new_bal)
 
       return Response(serializers.data)
-    return Response(status.errors, status=status.HTTP_400_BAD_REQUEST)  
+    return Response(status.errors, status=status.HTTP_400_BAD_REQUEST) 
+
+class getAllTransactionsApiView(APIView):
+  serializer_class = MakePaymentSerializer
+
+  def get(self, request,format=None):
+    transactions = Transaction.objects.all()
+    serializers = self.serializer_class(transactions,many=True)
+    return Response(serializers.data)
+
+class getUserTransactionApiView(APIView):
+  serializer_class = MakePaymentSerializer
+
+  def get(self, request, phone_number, format=None):
+    user = User.objects.filter(phone_number=phone_number).first()
+    account = Account.objects.filter(user=user).first()
+    transaction = Transaction.objects.filter(account=account).all()
+    serializer = self.serializer_class(transaction, many=True)
+    return Response(serializer.data)
+
+class getAllCategoriesApiView(APIView):
+  serializer_class = CategorySerializer
+  def get(self, request, format=None):
+    category = Category.objects.all()
+    serializers = self.serializer_class(category,many=True)
+    return Response(serializers.data)
+
+class getTransactioninCategoryApiView(APIView):
+  serializer_class = MakePaymentSerializer
+
+  def get(self, request,phone_number,category,format=None):
+    user = User.objects.filter(phone_number=phone_number).first()
+    account = Account.objects.filter(user=user).first()
+    transactions = Transaction.objects.filter(account=account,category=category).all()
+    serializer = self.serializer_class(transactions,many=True)
+    return Response(serializer.data)
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
 
 
 

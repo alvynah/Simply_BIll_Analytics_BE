@@ -21,4 +21,8 @@ path('api/get-account-details/<int:phone_number>/', views.GetUserAccountDetails.
 path('api/create-new-account/<int:phone_number>/', views.CreateNewAccount.as_view(), name="create_account"),
 path('api/maketransaction/<int:phone_number>/', views.MakeTransactions.as_view(), name="make-transaction"),
 path('api/deposit/<int:phone_number>/', views.DepositApiView.as_view(), name="deposit"),
+path('api/get/transactions/', views.getAllTransactionsApiView.as_view(), name="get_transaction"),
+path('api/get/user-transactions/<int:phone_number>/', views.getUserTransactionApiView.as_view(), name='user_transactions'),
+path('api/get/categories/', views.getAllCategoriesApiView.as_view(), name="categories"),
+path('api/filter/category/<int:phone_number>/<int:category>/',views.getTransactioninCategoryApiView.as_view(),name="filter_by_category")
 ]

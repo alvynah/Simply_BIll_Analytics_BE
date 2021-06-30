@@ -89,16 +89,24 @@ class CreateUserAccountSerializer(serializers.ModelSerializer):
 class MakePaymentSerializer(serializers.ModelSerializer):
   class Meta:
     model=Transaction
-    exclude=['account']
+    exclude = ['account']
 
-    # def to_representation(self, instance):
-    #   response = super().to_representation(instance)
-    #   response['user'] = CurrentUserSerializer(instance.user).data
-    #   return response
+  def to_representation(self, instance):
+      response = super().to_representation(instance)
+      response['category'] = CategorySerializer(instance.category).data
+      return response
 
+   
 
 class DepositSerializer(serializers.ModelSerializer):
 
   class Meta:
     model=Account
     fields= ["account_balance"] 
+
+class CategorySerializer(serializers.ModelSerializer):
+
+  class Meta :
+    model = Category
+    fields="__all__"
+
